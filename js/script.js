@@ -7,46 +7,55 @@ const tiketJs = document.getElementById("tiket");
 let sconto;
 const prezzoKm = 0.21;
 
-console.log(inpKmJa.value);
-console.log(prezzoKm);
-
-
-
 btnAnnJa.addEventListener("click", function(){
   tiketJs.classList.add("d-none")
 })
-  
-  
-btnGenJa.addEventListener('click',function(event){
-  event.preventDefault();
-  tiketJs.classList.remove("d-none")
-  let prezzoBigl = inpKmJa.value * prezzoKm;
-  
 
-  document.getElementById("conto").innerHTML =`
-     Il prezzo del tuo biglietto e : ${prezzoBigl.toFixed(2)} € `
-  ;
+
+
+
+
+btnGenJa.addEventListener('click',function(event){
+
+
+  if((inpNameJa.value == '') || (inpNameJa.value == 'undefined')) {
+    alert('Inserire nome e cognome');
+    tiketJs.classList.add('d-none');
+  } else if ((inpKmJa.value == '') || (inpKmJa.value == 'undefined')) {
+    alert('Inserire i chilometri da percorrere');
+    tiketJs.classList.add('d-none');
+  }
+
+  event.preventDefault();
+  document.getElementById("name").innerHTML = inpNameJa.value;
+  document.getElementById("binari").innerHTML =
+  Math.floor(Math.random() * 10 + 1);
+  document.getElementById("code").innerHTML =
+  Math.floor(Math.random() * 9000 + 1000);
+  let prezzoBigl = inpKmJa.value * prezzoKm;
+  tiketJs.classList.remove("d-none")
 
   if(selectAgeJv.value < 18){
-      sconto = (+prezzoBigl * 20) / 100;
-      
-      prezzoBigl = prezzoBigl - sconto;
-      
-      document.getElementById("conto-scontato").innerHTML =
-      `
-      (Minorenne) Il prezzo scontato del 20% e : ${prezzoBigl.toFixed(2)} € 
-      `;
-  } else if(selectAgeJv.value > 65){
-      sconto = (prezzoBigl * 40) / 100;
-      prezzoBigl = prezzoBigl - sconto;
-      document.getElementById("conto-scontato").innerHTML =
-      `
-      (Over 65) Il prezzo scontato del 40% e : ${prezzoBigl.toFixed(2)} € 
-      `;
-  }else{
+    
+    document.getElementById("discount").innerHTML = "Minorenne";
+    sconto = (prezzoBigl * 20) / 100;
+    prezzoBigl = prezzoBigl - sconto;
     document.getElementById("conto-scontato").innerHTML =
-    `
-    Il prezzo senza sconti e : ${prezzoBigl.toFixed(2)} €
-    `;
+    ` ${prezzoBigl.toFixed(2)} € `;
+
+  }else if(selectAgeJv.value > 65){
+
+    document.getElementById("discount").innerHTML = "Silver";
+    sconto = (prezzoBigl * 40) / 100;
+    prezzoBigl = prezzoBigl - sconto;
+    document.getElementById("conto-scontato").innerHTML =
+    `${prezzoBigl.toFixed(2)} € `;
+
+  }else{
+
+    document.getElementById("discount").innerHTML = "Base";
+    document.getElementById("conto-scontato").innerHTML =
+    `${prezzoBigl.toFixed(2)} €`;
+
   }
 })
